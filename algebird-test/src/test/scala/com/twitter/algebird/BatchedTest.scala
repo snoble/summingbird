@@ -52,6 +52,30 @@ class BatchedLaws extends CheckProperties {
   testBatchedMonoid[String]("String", 10)
   testBatchedMonoid[String]("String", 100)
   testBatchedMonoid[String]("String", 1000000)
+
+  def testBatchedSemigroup[A: Arbitrary: Semigroup](name: String, size: Int): Unit = {
+    implicit val m: Semigroup[Batched[A]] = Batched.compactingSemigroup[A](size)
+    property(s"CountMinSketch[$name] batched at $size is a Semigroup") {
+      semigroupLaws[Batched[A]]
+    }
+  }
+
+  testBatchedSemigroup[Int]("Int", 1)
+  testBatchedSemigroup[Int]("Int", 10)
+  testBatchedSemigroup[Int]("Int", 100)
+  testBatchedSemigroup[Int]("Int", 1000000)
+  testBatchedSemigroup[BigInt]("BigInt", 1)
+  testBatchedSemigroup[BigInt]("BigInt", 10)
+  testBatchedSemigroup[BigInt]("BigInt", 100)
+  testBatchedSemigroup[BigInt]("BigInt", 1000000)
+  testBatchedSemigroup[BigDecimal]("BigDecimal", 1)
+  testBatchedSemigroup[BigDecimal]("BigDecimal", 10)
+  testBatchedSemigroup[BigDecimal]("BigDecimal", 100)
+  testBatchedSemigroup[BigDecimal]("BigDecimal", 1000000)
+  testBatchedSemigroup[String]("String", 1)
+  testBatchedSemigroup[String]("String", 10)
+  testBatchedSemigroup[String]("String", 100)
+  testBatchedSemigroup[String]("String", 1000000)
 }
 
 class BatchedTests extends PropSpec with Matchers with PropertyChecks {
